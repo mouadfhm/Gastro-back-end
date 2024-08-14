@@ -14,7 +14,7 @@ class PatientController
         try {
             $patients = Patient::all();
             return[
-                'patients' => $patients,
+                'payload' => $patients,
                 'status' => 200
             ];
         } catch (\Exception $e) {
@@ -43,6 +43,7 @@ class PatientController
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
                 'age' => $request->age,
+                'phone' => $request->phone,
                 'RC' => $request->RC,
                 'result' => $request->result
             ]);
@@ -72,7 +73,7 @@ class PatientController
             ];
         }
         try {
-            $patient = Patient::where('firstname', $request->firstname)->where('lastname', $request->lastname)->first();
+            $patient = Patient::find($request->id);
             if(!$patient) {
                 return[
                     'error' => 'Patient not found',
@@ -83,6 +84,7 @@ class PatientController
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
                 'age' => $request->age,
+                'phone' => $request->phone,
                 'RC' => $request->RC,
                 'result' => $request->result
             ]);
@@ -90,6 +92,40 @@ class PatientController
                 'payload' => $patient,
                 'status' => 200,
                 'message' => 'Patient updated successfully'
+            ];
+        } catch (\Exception $e) {
+            return[
+                'error' => $e->getMessage(),
+                'status' => 500
+            ];
+        }
+    }
+    public function delete(Request $request)
+    {
+        $rules=[
+            'firstname' => 'required',
+            'lastname' => 'required',
+        ];
+        $validator=Validator($request->all(),$rules);
+        if ($validator->fails())    {
+            return[
+                'error' => $validator->errors(),
+                'status' => 500
+            ];
+        }
+        try {
+            $patient = Patient::where('firstname', $request->firstname)->where('lastname', $request->lastname)->first();
+            if(!$patient) {
+                return[
+                    'error' => 'Patient not found',
+                    'status' => 404
+                ];
+            }
+            $patient->delete();
+            return[
+                'payload' => $patient,
+                'status' => 200,
+                'message' => 'Patient deleted successfully'
             ];
         } catch (\Exception $e) {
             return[

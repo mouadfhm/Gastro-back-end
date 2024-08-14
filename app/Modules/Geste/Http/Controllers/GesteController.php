@@ -15,7 +15,7 @@ class GesteController
         try {
             $gestes = Geste::with('Patient', 'Clinique')->get();
             return[
-                'patients' => $gestes,
+                'payload' => $gestes,
                 'status' => 200
             ];
         } catch (\Exception $e) {
@@ -34,8 +34,6 @@ class GesteController
             'patient_firstname' => 'required',
             'patient_lastname' => 'required',
             'date' => 'required',
-            'type' => 'required',
-            'result' => 'required',
         ];
         $validator=Validator($request->all(),$rules);
         if ($validator->fails())    {
@@ -52,6 +50,7 @@ class GesteController
                     'firstname' => $request->patient_firstname,
                     'lastname' => $request->patient_lastname,
                     'age' => $request->age,
+                    'phone' => $request->phone,
                     'RC' => $request->RC,
                     'result' => $request->result
                 ]);

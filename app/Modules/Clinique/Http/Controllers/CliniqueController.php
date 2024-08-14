@@ -13,7 +13,7 @@ class CliniqueController
         try {
             $cliniques = Clinique::all();
             return[
-                'patients' => $cliniques,
+                'payload' => $cliniques,
                 'status' => 200
             ];
         } catch (\Exception $e) {
