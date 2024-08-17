@@ -112,9 +112,10 @@ class GesteController
                     'result' => $request->result
                 ]); 
             }
+            $clinique = Clinique::where('name', $request->clinique_name)->first();
             $geste->update([
                 'patient_id' => $patient->id,
-                'clinique_id' => $request->clinique_id,
+                'clinique_id' => $clinique->id,
                 'date' => $request->date,
                 'type' => $request->type,
                 'result' => $request->result
