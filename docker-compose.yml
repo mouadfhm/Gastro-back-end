@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  laravel:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - /var/www/html
+    networks:
+      - app-network
+    environment:
+      - DB_HOST=mysql
+      - DB_DATABASE=gastro_db
+      - DB_USERNAME=root
+      - DB_PASSWORD=
+  
+  vuetify:
+    build: ../Gastro_f
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: gastro_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
+    name: gastro_app-network
+
+volumes:
+  mysql_data:
