@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Modules\TypeGeste\Models\TypeGeste;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,6 +19,14 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]);
+
+        TypeGeste::factory()->create([
+            ['id'=>1,'name'=>'Rectosigmoidoscopie'],
+            ['id'=>2,'name'=>'COLONOSCOPIE'],
+            ['id'=>3,'name'=>'FOGD'],
+            ['id'=>4,'name'=>'BLOC'],
+            ['id'=>5,'name'=>'Autres…'],
         ]);
     }
 }
